@@ -13,7 +13,7 @@ const Button = ({
   className = "",
 }: ButtonProps) => {
   const baseClasses =
-    "w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed";
+    "w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
 
   const variants = {
     primary: "bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500",
@@ -28,7 +28,7 @@ const Button = ({
     >
       {isLoading ? (
         <>
-          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white "></div>
           <span>Processing...</span>
         </>
       ) : (
