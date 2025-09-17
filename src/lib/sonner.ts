@@ -4,7 +4,6 @@ export const showSuccess = (message: string) => {
   toast.success(message, {
     duration: 2000,
     position: "top-right",
-    style: { color: "#155dfc" },
   });
 };
 

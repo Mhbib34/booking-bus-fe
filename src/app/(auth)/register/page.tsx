@@ -124,7 +124,7 @@ const RegisterPage = () => {
                 Create Account
               </h1>
               <p className="text-gray-400">
-                Join us to manage your bus booking system
+                Join us to explore the world of BusKu.
               </p>
             </div>
 
