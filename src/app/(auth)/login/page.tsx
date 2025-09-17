@@ -5,9 +5,84 @@ import Input from "@/components/fragment/Input";
 import Button from "@/components/fragment/Button";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import axiosInstance from "@/lib/axiosInstance";
+import { showSuccess } from "@/lib/sonner";
+import PageLoader from "@/components/fragment/PageLoader";
+
+interface LoginErrors {
+  identifier?: string;
+  password?: string;
+}
 
 const LoginPage = () => {
+  const [loginForm, setLoginForm] = useState({
+    identifier: "",
+    password: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<LoginErrors>({});
   const [message, setMessage] = useState({ type: "", text: "" });
+  const router = useRouter();
+
+  const handleLoginChange = (field: keyof typeof loginForm, value: string) => {
+    setLoginForm((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
+  const validateLogin = () => {
+    const newErrors: LoginErrors = {};
+
+    if (!loginForm.identifier.trim()) {
+      newErrors.identifier = "Email or phone number is required";
+    }
+
+    if (!loginForm.password) {
+      newErrors.password = "Password is required";
+    } else if (loginForm.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateLogin()) return;
+
+    setLoading(true);
+    setMessage({ type: "", text: "" });
+
+    try {
+      const res = await axiosInstance.post("/v1/auth/login", loginForm);
+      showSuccess("Login successful. Redirecting...");
+      console.log(res.data);
+
+      if (res.data.data.role === "admin") {
+        router.push("/admin");
+      }
+      if (res.data.data.role === "user") {
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+      setMessage({
+        type: "error",
+        text: "Login failed. Please check your credentials.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <PageLoader />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
@@ -24,36 +99,35 @@ const LoginPage = () => {
                 Welcome Back
               </h1>
               <p className="text-gray-400">
-                Sign in to access your admin dashboard
+                Sign in to your account to continue
               </p>
             </div>
 
-            <form
-              // onSubmit={handleLogin}
-              className="space-y-6"
-            >
+            <form onSubmit={handleLogin} className="space-y-6">
               <Message type={message.type} text={message.text} />
 
               <Input
                 type="text"
                 placeholder="Email or phone number"
-                // value={loginForm.identifier}
-                // onChange={(e) => handleLoginChange("identifier", e.target.value)}
+                value={loginForm.identifier}
+                onChange={(e) =>
+                  handleLoginChange("identifier", e.target.value)
+                }
                 Icon={Mail}
-                // error={errors.identifier}
-                // disabled={loading}
+                error={errors.identifier}
+                disabled={loading}
               />
 
               <Input
                 placeholder="Password"
-                // value={loginForm.password}
-                // onChange={(e) => handleLoginChange("password", e.target.value)}
+                value={loginForm.password}
+                onChange={(e) => handleLoginChange("password", e.target.value)}
                 Icon={Lock}
-                // error={errors.password}
+                error={errors.password}
                 showPasswordToggle={true}
-                // showPassword={showPassword}
-                // onTogglePassword={() => setShowPassword(!showPassword)}
-                // disabled={loading}
+                showPassword={showPassword}
+                onTogglePassword={() => setShowPassword(!showPassword)}
+                disabled={loading}
               />
 
               <div className="flex items-center justify-between">
@@ -61,7 +135,7 @@ const LoginPage = () => {
                   <input
                     type="checkbox"
                     className="h-4 w-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 focus:ring-2"
-                    // disabled={loading}
+                    disabled={loading}
                   />
                   <span className="ml-2 text-sm text-gray-400">
                     Remember me
@@ -70,16 +144,13 @@ const LoginPage = () => {
                 <button
                   type="button"
                   className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
-                  //   disabled={loading}
+                  disabled={loading}
                 >
                   Forgot password?
                 </button>
               </div>
 
-              <Button
-              //   onClick={handleLogin}
-              // loading={loading}
-              >
+              <Button onClick={() => handleLogin} loading={loading}>
                 <span>Sign In</span>
                 <ArrowRight className="h-4 w-4" />
               </Button>
@@ -87,10 +158,10 @@ const LoginPage = () => {
               <div className="text-center">
                 <span className="text-gray-400">Dont have an account? </span>
                 <button
+                  onClick={() => router.push("/register")}
                   type="button"
-                  //   onClick={() => setCurrentPage("register")}
                   className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
-                  //   disabled={loading}
+                  disabled={loading}
                 >
                   Sign up
                 </button>
