@@ -6,7 +6,7 @@ import { ArrowRight, Bus, Lock, Mail, Phone, User2 } from "lucide-react";
 import Message from "../components/Message";
 import React, { useState } from "react";
 import { AuthValidation } from "@/utils/validate";
-import { User } from "@/types/user";
+import { User } from "@/types/user.type";
 import axiosInstance from "@/lib/axiosInstance";
 import { useRouter } from "next/navigation";
 import PageLoader from "@/components/fragment/PageLoader";

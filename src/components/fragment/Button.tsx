@@ -4,6 +4,7 @@ type ButtonProps = {
   loading?: boolean;
   variant?: "primary" | "secondary";
   className?: string;
+  type?: "button" | "submit" | "reset";
 };
 const Button = ({
   children,
@@ -11,6 +12,7 @@ const Button = ({
   loading: isLoading = false,
   variant = "primary",
   className = "",
+  type = "button",
 }: ButtonProps) => {
   const baseClasses =
     "w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
@@ -22,6 +24,7 @@ const Button = ({
 
   return (
     <button
+      type={type}
       onClick={onClick}
       disabled={isLoading}
       className={`${baseClasses} ${variants[variant]} ${className}`}
