@@ -17,7 +17,7 @@ const ActionButton = ({
   return (
     <button
       onClick={onClick}
-      className={`p-2 rounded transition-colors ${variants[variant]}`}
+      className={`p-2 rounded transition-colors cursor-pointer ${variants[variant]}`}
     >
       <Icon className={`h-4 w-4`} />
     </button>
