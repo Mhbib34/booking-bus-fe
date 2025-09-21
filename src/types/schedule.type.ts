@@ -13,8 +13,6 @@ export class Schedule {
     total_seats: number;
     facilities: string[];
   };
-  route?: {
-    origin: string;
-    destination: string;
-  };
+  origin?: string;
+  destination?: string;
 }

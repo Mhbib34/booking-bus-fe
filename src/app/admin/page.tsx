@@ -17,6 +17,7 @@ import Sidebar from "./components/layout/Sidebar";
 import AdminDashboard from "./components/layout/AdminDashboard";
 import RouteSection from "./components/layout/RouteSection";
 import BusesSection from "./components/layout/BusesSection";
+import ScheduleSection from "./components/layout/ScheduleSection";
 
 const AdminPage = () => {
   const { loading } = useAuthStore(
@@ -185,82 +186,6 @@ const AdminPage = () => {
     );
   };
 
-  const renderSchedules = () => (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold text-white">
-          Schedule Management
-        </h2>
-        <button
-          onClick={() => openModal("add-schedule")}
-          className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-        >
-          <Plus className="h-4 w-4" />
-          <span>Add Schedule</span>
-        </button>
-      </div>
-
-      <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full">
-            <thead className="bg-gray-700/50">
-              <tr>
-                <TableHeader sortable>Route</TableHeader>
-                <TableHeader sortable>Departure</TableHeader>
-                <TableHeader>Class</TableHeader>
-                <TableHeader sortable>Price</TableHeader>
-                <TableHeader>Available Seats</TableHeader>
-                <TableHeader>Status</TableHeader>
-                <TableHeader>Actions</TableHeader>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-700">
-              {schedules.map((schedule) => (
-                <TableRow key={schedule.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-white font-medium">
-                    {schedule.route}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-white">
-                    {schedule.departure_time}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-white capitalize">
-                    {schedule.bus_class}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-white">
-                    Rp {schedule.price.toLocaleString("id-ID")}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-white">
-                    {schedule.available_seats}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {getStatusBadge(schedule.status)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex space-x-2">
-                      <ActionButton
-                        icon={Eye}
-                        onClick={() => openModal("view-schedule", schedule)}
-                      />
-                      <ActionButton
-                        icon={Edit}
-                        onClick={() => openModal("edit-schedule", schedule)}
-                      />
-                      <ActionButton
-                        icon={XCircle}
-                        onClick={() => openModal("cancel-schedule", schedule)}
-                        variant="danger"
-                      />
-                    </div>
-                  </td>
-                </TableRow>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
-
   const renderBookings = () => (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -337,7 +262,7 @@ const AdminPage = () => {
       case "buses":
         return <BusesSection getStatusBadge={getStatusBadge} />;
       case "schedules":
-        return renderSchedules();
+        return <ScheduleSection getStatusBadge={getStatusBadge} />;
       case "bookings":
         return renderBookings();
       default:
