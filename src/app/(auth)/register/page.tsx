@@ -219,7 +219,7 @@ const RegisterPage = () => {
                 </label>
               </div>
 
-              <Button onClick={() => handleRegister} loading={loading}>
+              <Button type="submit" loading={loading}>
                 <span>Create Account</span>
                 <ArrowRight className="h-4 w-4" />
               </Button>
