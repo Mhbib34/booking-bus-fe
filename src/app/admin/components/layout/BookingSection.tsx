@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Filter } from "lucide-react";
 import TableRow from "../fragment/TableRow";
 import TableHeader from "../fragment/TableHeader";
 import { useBookingStore } from "@/store/bookings-strore";
 import { useShallow } from "zustand/shallow";
 import { Format } from "@/utils/format";
-import Modal from "../template/Modal";
 
 type Props = {
   getStatusBadge: (status: string) => React.JSX.Element;

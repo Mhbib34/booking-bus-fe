@@ -150,7 +150,7 @@ const LoginPage = () => {
                 </button>
               </div>
 
-              <Button onClick={() => handleLogin} loading={loading}>
+              <Button type="submit" loading={loading}>
                 <span>Sign In</span>
                 <ArrowRight className="h-4 w-4" />
               </Button>
@@ -160,7 +160,7 @@ const LoginPage = () => {
                 <button
                   onClick={() => router.push("/register")}
                   type="button"
-                  className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                  className="text-blue-400 hover:text-blue-300 font-medium transition-colors cursor-pointer"
                   disabled={loading}
                 >
                   Sign up
