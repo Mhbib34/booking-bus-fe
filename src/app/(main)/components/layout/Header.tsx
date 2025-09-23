@@ -1,5 +1,6 @@
 "use client";
 
+import PageLoader from "@/components/fragment/PageLoader";
 import { showConfirm } from "@/lib/sonner";
 import { useAuthStore } from "@/store/auth-store";
 import { Bus } from "lucide-react";
@@ -8,11 +9,12 @@ import React, { useEffect, useState } from "react";
 import { useShallow } from "zustand/shallow";
 
 const Header = () => {
-  const { user, logout } = useAuthStore(
+  const { user, logout, loading } = useAuthStore(
     useShallow((state) => {
       return {
         user: state.user,
         logout: state.logout,
+        loading: state.loading,
       };
     })
   );
@@ -36,12 +38,13 @@ const Header = () => {
     logout();
     router.push("/login");
   };
+
+  if (loading) return <PageLoader />;
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-[999] transition-all duration-300 ${
-        scrolled
-          ? "bg-white shadow-md"
-          : "bg-transparent backdrop-blur-2xl shadow-sm"
+        scrolled ? "bg-white shadow-md" : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

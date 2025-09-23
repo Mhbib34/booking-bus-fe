@@ -13,9 +13,12 @@ import {
   Phone,
 } from "lucide-react";
 import Image from "next/image";
-import Header from "./(main)/components/fragment/Header";
 import { useAuthStore } from "@/store/auth-store";
 import { useShallow } from "zustand/shallow";
+import Header from "./(main)/components/layout/Header";
+import HeroSection from "./(main)/components/layout/HeroSection";
+import { Schedule } from "@/types/schedule.type";
+import { Format } from "@/utils/format";
 
 interface Route {
   id: string;
@@ -23,26 +26,6 @@ interface Route {
   destination: string;
   base_price: number;
   is_active: boolean;
-}
-
-interface Schedule {
-  id: string;
-  route: {
-    id: string;
-    origin: string;
-    destination: string;
-  };
-  bus_class: string;
-  departure_time: string;
-  price: number;
-  available_seats: number;
-  status: string;
-  bus?: {
-    bus_number: string;
-    bus_type: string;
-    facilities: string[];
-    plate_number: string;
-  };
 }
 
 interface PopularRoute {
@@ -148,111 +131,6 @@ const Home = () => {
     //eslint-disable-next-line
   }, []);
 
-  const handleSearch = async () => {
-    if (
-      !searchForm.origin ||
-      !searchForm.destination ||
-      !searchForm.departure_date
-    ) {
-      alert("Mohon lengkapi semua field pencarian");
-      return;
-    }
-
-    setIsSearching(true);
-
-    // Mock search results - dalam implementasi nyata, panggil API
-    setTimeout(() => {
-      const mockSchedules: Schedule[] = [
-        {
-          id: "1",
-          route: {
-            id: "1",
-            origin: searchForm.origin,
-            destination: searchForm.destination,
-          },
-          bus_class: "Eksekutif",
-          departure_time: "06:00",
-          price: 85000,
-          available_seats: 35,
-          status: "scheduled",
-          bus: {
-            bus_number: "B001",
-            bus_type: "eksekutif",
-            facilities: ["ac", "wifi", "tv", "toilet"],
-            plate_number: "B1234ABC",
-          },
-        },
-        {
-          id: "2",
-          route: {
-            id: "1",
-            origin: searchForm.origin,
-            destination: searchForm.destination,
-          },
-          bus_class: "VIP",
-          departure_time: "08:00",
-          price: 95000,
-          available_seats: 28,
-          status: "scheduled",
-          bus: {
-            bus_number: "B002",
-            bus_type: "vip",
-            facilities: ["ac", "wifi", "tv", "toilet", "reclining_seat"],
-            plate_number: "B5678DEF",
-          },
-        },
-        {
-          id: "3",
-          route: {
-            id: "1",
-            origin: searchForm.origin,
-            destination: searchForm.destination,
-          },
-          bus_class: "Bisnis",
-          departure_time: "14:00",
-          price: 75000,
-          available_seats: 42,
-          status: "scheduled",
-          bus: {
-            bus_number: "B003",
-            bus_type: "bisnis",
-            facilities: ["ac", "wifi"],
-            plate_number: "B9012GHI",
-          },
-        },
-        {
-          id: "4",
-          route: {
-            id: "1",
-            origin: searchForm.origin,
-            destination: searchForm.destination,
-          },
-          bus_class: "VIP",
-          departure_time: "20:00",
-          price: 95000,
-          available_seats: 30,
-          status: "scheduled",
-          bus: {
-            bus_number: "B004",
-            bus_type: "vip",
-            facilities: [
-              "ac",
-              "wifi",
-              "tv",
-              "toilet",
-              "reclining_seat",
-              "charging_port",
-            ],
-            plate_number: "B3456JKL",
-          },
-        },
-      ];
-      setSchedules(mockSchedules);
-      setShowSchedules(true);
-      setIsSearching(false);
-    }, 1000);
-  };
-
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -285,138 +163,16 @@ const Home = () => {
     return facilityMap[facility] || facility;
   };
 
-  const uniqueCities = Array.from(
-    new Set([
-      ...routes.map((r) => r.origin),
-      ...routes.map((r) => r.destination),
-    ])
-  ).sort();
-
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 ">
       {/* Header */}
       <Header />
 
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center text-white">
-        {/* Background Image */}
-        <Image
-          src="https://i.pinimg.com/1200x/6d/84/32/6d8432a39d07f0b8faff8e1327d2299e.jpg"
-          alt="Hero Background"
-          fill
-          priority
-          className="absolute inset-0 object-cover"
-        />
-
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/70 to-blue-800/70" />
-
-        {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fadeIn">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Pesan Tiket Bus Online
-          </h1>
-          <p className="text-xl text-blue-100 mb-12">
-            Mudah, cepat, dan terpercaya untuk perjalanan Anda
-          </p>
-
-          {/* Search Form */}
-          <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-xl p-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              {/* Dari */}
-              <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Dari
-                </label>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                  <select
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                    value={searchForm.origin}
-                    onChange={(e) =>
-                      setSearchForm({ ...searchForm, origin: e.target.value })
-                    }
-                  >
-                    <option value="">Pilih kota asal</option>
-                    {uniqueCities.map((city) => (
-                      <option key={city} value={city}>
-                        {city}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* Ke */}
-              <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Ke
-                </label>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                  <select
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                    value={searchForm.destination}
-                    onChange={(e) =>
-                      setSearchForm({
-                        ...searchForm,
-                        destination: e.target.value,
-                      })
-                    }
-                  >
-                    <option value="">Pilih kota tujuan</option>
-                    {uniqueCities.map((city) => (
-                      <option key={city} value={city}>
-                        {city}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* Tanggal */}
-              <div className="relative">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tanggal Keberangkatan
-                </label>
-                <div className="relative">
-                  <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                  <input
-                    type="date"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                    value={searchForm.departure_date}
-                    onChange={(e) =>
-                      setSearchForm({
-                        ...searchForm,
-                        departure_date: e.target.value,
-                      })
-                    }
-                    min={new Date().toISOString().split("T")[0]}
-                  />
-                </div>
-              </div>
-
-              {/* Button */}
-              <div className="flex items-end">
-                <button
-                  onClick={handleSearch}
-                  disabled={isSearching}
-                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-semibold flex items-center justify-center space-x-2"
-                >
-                  {isSearching ? (
-                    <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
-                  ) : (
-                    <>
-                      <Search className="h-5 w-5" />
-                      <span>Cari</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection
+        setSchedules={setSchedules}
+        setShowSchedule={setShowSchedules}
+      />
 
       {/* Search Results */}
       {showSchedules && (
@@ -426,12 +182,11 @@ const Home = () => {
               Jadwal Keberangkatan
             </h2>
             <p className="text-gray-600">
-              {searchForm.origin} → {searchForm.destination} •{" "}
-              {new Date(searchForm.departure_date).toLocaleDateString("id-ID")}
+              Berikut adalah daftar jadwal keberangkatan yang tersedia:
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {schedules.map((schedule) => (
               <div
                 key={schedule.id}
@@ -439,19 +194,19 @@ const Home = () => {
               >
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-1">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center space-x-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center md:space-x-4 space-y-2 md:space-y-0 md:flex-row flex-col">
                         <div className="flex items-center space-x-2">
                           <Clock className="h-5 w-5 text-gray-400" />
                           <span className="text-xl font-bold text-gray-900">
-                            {schedule.departure_time}
+                            {schedule.departure_time?.slice(0, 5)}
                           </span>
                         </div>
                         <span
                           className={`px-3 py-1 rounded-full text-sm font-medium ${
-                            schedule.bus_class === "VIP"
+                            schedule.bus_class === "bisnis"
                               ? "bg-purple-100 text-purple-800"
-                              : schedule.bus_class === "Eksekutif"
+                              : schedule.bus_class === "eksekutif"
                               ? "bg-blue-100 text-blue-800"
                               : "bg-green-100 text-green-800"
                           }`}
@@ -461,7 +216,7 @@ const Home = () => {
                       </div>
                       <div className="text-right">
                         <div className="text-2xl font-bold text-blue-600 mb-1">
-                          {formatCurrency(schedule.price)}
+                          {Format.formatCurrency(schedule.price!)}
                         </div>
                         <div className="text-sm text-gray-500">per orang</div>
                       </div>
@@ -469,79 +224,81 @@ const Home = () => {
 
                     {/* Bus Information */}
                     {schedule.bus && (
-                      <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                        <div className="flex items-center justify-between mb-3">
-                          <div>
-                            <h4 className="font-semibold text-gray-900">
-                              Bus {schedule.bus.bus_number}
-                            </h4>
-                            <p className="text-sm text-gray-600">
-                              {schedule.bus.plate_number}
-                            </p>
-                          </div>
-                          <div className="text-right">
-                            <div className="flex items-center space-x-1 text-sm text-gray-600 mb-1">
-                              <Users className="h-4 w-4" />
-                              <span>
-                                {schedule.available_seats} kursi tersedia
+                      <>
+                        <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                          <div className="flex items-start justify-between mb-3">
+                            <div>
+                              <h4 className="font-semibold text-gray-900">
+                                Bus {schedule.bus.bus_number}
+                              </h4>
+                            </div>
+                            <div className="text-right">
+                              <div className="flex items-center space-x-1 text-sm text-gray-600 mb-1">
+                                <Users className="h-4 w-4" />
+                                <span>
+                                  {schedule.available_seats} kursi tersedia
+                                </span>
+                              </div>
+                              <span
+                                className={`px-2 py-1 rounded text-xs font-medium ${
+                                  schedule.available_seats! > 20
+                                    ? "bg-green-100 text-green-800"
+                                    : schedule.available_seats! > 10
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : "bg-red-100 text-red-800"
+                                }`}
+                              >
+                                {schedule.available_seats! > 20
+                                  ? "Tersedia Banyak"
+                                  : schedule.available_seats! > 10
+                                  ? "Tersedia Terbatas"
+                                  : "Hampir Penuh"}
                               </span>
                             </div>
-                            <span
-                              className={`px-2 py-1 rounded text-xs font-medium ${
-                                schedule.available_seats > 20
-                                  ? "bg-green-100 text-green-800"
-                                  : schedule.available_seats > 10
-                                  ? "bg-yellow-100 text-yellow-800"
-                                  : "bg-red-100 text-red-800"
-                              }`}
-                            >
-                              {schedule.available_seats > 20
-                                ? "Tersedia Banyak"
-                                : schedule.available_seats > 10
-                                ? "Tersedia Terbatas"
-                                : "Hampir Penuh"}
+                          </div>
+
+                          {/* Facilities */}
+                          <div>
+                            <h5 className="text-sm font-medium text-gray-700 mb-2">
+                              Fasilitas:
+                            </h5>
+                            <div className="flex flex-wrap gap-2">
+                              {schedule.bus.facilities.map(
+                                (facility, index) => (
+                                  <span
+                                    key={index}
+                                    className="inline-flex items-center space-x-1 px-2 py-1 bg-white rounded border text-xs"
+                                  >
+                                    <span>{getFacilityIcon(facility)}</span>
+                                    <span>{getFacilityLabel(facility)}</span>
+                                  </span>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
+                          <div className="flex md:items-center md:space-x-4 md:space-y-0 space-y-4 flex-col md:flex-row ">
+                            <span>Estimasi perjalanan: 3-4 jam</span>
+                            <span className="hidden md:block">•</span>
+                            <span>
+                              Terminal keberangkatan: Terminal{" "}
+                              {schedule.route?.origin}
                             </span>
                           </div>
                         </div>
-
-                        {/* Facilities */}
-                        <div>
-                          <h5 className="text-sm font-medium text-gray-700 mb-2">
-                            Fasilitas:
-                          </h5>
-                          <div className="flex flex-wrap gap-2">
-                            {schedule.bus.facilities.map((facility, index) => (
-                              <span
-                                key={index}
-                                className="inline-flex items-center space-x-1 px-2 py-1 bg-white rounded border text-xs"
-                              >
-                                <span>{getFacilityIcon(facility)}</span>
-                                <span>{getFacilityLabel(facility)}</span>
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
+                      </>
                     )}
 
                     {/* Seat Status */}
-                    <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
-                      <div className="flex items-center space-x-4">
-                        <span>Estimasi perjalanan: 3-4 jam</span>
-                        <span>•</span>
-                        <span>
-                          Terminal keberangkatan: Terminal {searchForm.origin}
-                        </span>
-                      </div>
-                    </div>
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center pt-4 border-t">
+                <div className="flex justify-between md:items-center space-y-4 md:space-y-0 pt-4 border-t md:flex-row flex-col">
                   <div className="text-sm text-gray-500">
                     <p>Gratis pembatalan hingga 2 jam sebelum keberangkatan</p>
                   </div>
-                  <button className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 font-semibold flex items-center space-x-2 transition-colors">
+                  <button className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 font-semibold flex items-center space-x-2 transition-colors justify-center">
                     <span>Pilih Kursi</span>
                     <ChevronRight className="h-4 w-4" />
                   </button>

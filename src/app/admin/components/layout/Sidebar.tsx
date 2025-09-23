@@ -57,7 +57,7 @@ const Sidebar = ({ activeTab, setActiveTab }: sidebarProps) => {
         })}
       </nav>
 
-      <div className="absolute bottom-0 w-64 p-6 border-t border-gray-700">
+      <div className="absolute bottom-0 w-64 p-6 border-t border-gray-700 ">
         <button
           onClick={() =>
             showConfirm(
@@ -67,7 +67,7 @@ const Sidebar = ({ activeTab, setActiveTab }: sidebarProps) => {
               "Keluar"
             )
           }
-          className="flex items-center space-x-3 text-gray-300 hover:text-red-500 transition-colors cursor-pointer"
+          className="flex items-center space-x-3 text-red-600 hover:text-red-700 transition-colors cursor-pointer"
         >
           <LogOut className="h-5 w-5" />
           <span>Logout</span>

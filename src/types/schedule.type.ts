@@ -2,6 +2,7 @@ export class Schedule {
   id?: string;
   route_id?: string;
   departure_time?: string;
+  departure_date?: string;
   available_seats?: number;
   status?: string;
   price?: number;
@@ -13,6 +14,8 @@ export class Schedule {
     total_seats: number;
     facilities: string[];
   };
-  origin?: string;
-  destination?: string;
+  route?: {
+    origin: string;
+    destination: string;
+  };
 }

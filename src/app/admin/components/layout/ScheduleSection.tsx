@@ -64,13 +64,15 @@ const ScheduleSection = ({ getStatusBadge }: Props) => {
             <table className="min-w-full">
               <thead className="bg-gray-700/50">
                 <tr>
-                  <TableHeader sortable>Route</TableHeader>
-                  <TableHeader sortable>Departure</TableHeader>
-                  <TableHeader>Class</TableHeader>
-                  <TableHeader sortable>Price</TableHeader>
-                  <TableHeader>Available Seats</TableHeader>
+                  <TableHeader sortable>Rute</TableHeader>
+                  <TableHeader sortable>Waktu Keberangkatan</TableHeader>
+                  <TableHeader>Kelas Bus</TableHeader>
+                  <TableHeader>Nomor Bus</TableHeader>
+                  <TableHeader sortable>Harga</TableHeader>
+                  <TableHeader>Kursi Tersedia</TableHeader>
+                  <TableHeader>Tanggal Jadwal</TableHeader>
                   <TableHeader>Status</TableHeader>
-                  <TableHeader>Actions</TableHeader>
+                  <TableHeader>Aksi</TableHeader>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-700">
@@ -78,7 +80,7 @@ const ScheduleSection = ({ getStatusBadge }: Props) => {
                   schedules.map((schedule) => (
                     <TableRow key={schedule.id}>
                       <td className="px-6 py-4 whitespace-nowrap text-white font-medium">
-                        {schedule.origin} - {schedule.destination}
+                        {schedule.route?.origin} - {schedule.route?.destination}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-white">
                         {schedule.departure_time}
@@ -86,11 +88,17 @@ const ScheduleSection = ({ getStatusBadge }: Props) => {
                       <td className="px-6 py-4 whitespace-nowrap text-white capitalize">
                         {schedule.bus_class}
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-white capitalize">
+                        {schedule.bus?.bus_number}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-white">
                         {Format.formatCurrency(schedule.price!)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-white">
                         {schedule.available_seats}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-white">
+                        {Format.formatDate(schedule.departure_date!)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {getStatusBadge(schedule.status!)}
