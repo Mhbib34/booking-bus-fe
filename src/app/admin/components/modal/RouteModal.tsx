@@ -149,7 +149,7 @@ const RouteModal = ({
         </div>
       )}
 
-      <Button loading={loading} onClick={() => handleSubmit}>
+      <Button loading={loading} type="submit">
         <span>{isEdit ? "Update Rute" : "Tambah Rute"}</span>
         <ArrowRight className="h-4 w-4" />
       </Button>

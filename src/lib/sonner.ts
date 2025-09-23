@@ -33,7 +33,7 @@ export const showConfirm = (
       label: label,
       onClick: onConfirm,
     },
-    duration: 4000,
+    duration: 2000,
     position: "top-right",
   });
 };

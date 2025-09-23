@@ -106,6 +106,8 @@ const BusesModal = ({
           plate_number: bus.plate_number,
           is_active: bus.is_active,
         });
+        console.log(res);
+
         if (res.status === 200) {
           showSuccess("Bus berhasil diperbarui.");
           fetchBuses();
