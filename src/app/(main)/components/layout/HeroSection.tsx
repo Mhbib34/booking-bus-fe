@@ -1,3 +1,4 @@
+import { showWarning } from "@/lib/sonner";
 import { useScheduleStore } from "@/store/schedule-store";
 import { Schedule } from "@/types/schedule.type";
 import { Calendar, MapPin, Search } from "lucide-react";
@@ -8,8 +9,15 @@ import { useShallow } from "zustand/shallow";
 type props = {
   setSchedules: React.Dispatch<React.SetStateAction<Schedule[]>>;
   setShowSchedule: React.Dispatch<React.SetStateAction<boolean>>;
+  scheduleSectionRef: React.RefObject<HTMLDivElement | null>;
+  setHasSearched: React.Dispatch<React.SetStateAction<boolean>>;
 };
-const HeroSection = ({ setSchedules, setShowSchedule }: props) => {
+const HeroSection = ({
+  setSchedules,
+  setShowSchedule,
+  scheduleSectionRef,
+  setHasSearched,
+}: props) => {
   const { fetchSchedules } = useScheduleStore(
     useShallow((state) => {
       return {
@@ -37,10 +45,11 @@ const HeroSection = ({ setSchedules, setShowSchedule }: props) => {
       !searchForm.destination ||
       !searchForm.departure_date
     ) {
-      alert("Mohon lengkapi semua field pencarian");
+      showWarning("Mohon lengkapi semua field pencarian");
       return;
     }
 
+    setHasSearched(true);
     setIsSearching(true);
     try {
       // panggil fetchSchedules dulu
@@ -55,6 +64,21 @@ const HeroSection = ({ setSchedules, setShowSchedule }: props) => {
       if (state.schedules.length > 0) {
         setSchedules(state.schedules);
         setShowSchedule(true);
+        setTimeout(() => {
+          scheduleSectionRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }, 200);
+      } else if (state.schedules.length === 0) {
+        setSchedules([]);
+        setShowSchedule(false);
+        setTimeout(() => {
+          scheduleSectionRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }, 200);
       }
     } catch (error) {
       console.error("❌ handleSearch error:", error);
@@ -79,7 +103,7 @@ const HeroSection = ({ setSchedules, setShowSchedule }: props) => {
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/70 to-blue-800/70" />
 
         {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fadeIn">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fadeIn mt-20 md:mt-0">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Pesan Tiket Bus Online
           </h1>
@@ -168,7 +192,7 @@ const HeroSection = ({ setSchedules, setShowSchedule }: props) => {
                 <button
                   onClick={handleSearch}
                   disabled={isSearching}
-                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-semibold flex items-center justify-center space-x-2"
+                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-semibold flex items-center justify-center space-x-2 cursor-pointer"
                 >
                   {isSearching ? (
                     <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
