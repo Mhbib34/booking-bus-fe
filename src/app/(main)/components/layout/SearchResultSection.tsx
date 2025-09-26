@@ -1,5 +1,6 @@
 import { Schedule } from "@/types/schedule.type";
 import { Format } from "@/utils/format";
+import { getFacilityIcon, getFacilityLabel } from "@/utils/status";
 import {
   ChevronRight,
   Clock,
@@ -8,7 +9,8 @@ import {
   Calendar,
   MapPin,
 } from "lucide-react";
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState } from "react";
+import BookingModal from "../modal/BookingModal";
 
 type ScheduleProps = {
   showSchedules: boolean;
@@ -18,28 +20,20 @@ type ScheduleProps = {
 
 const SearchResultSection = forwardRef<HTMLElement, ScheduleProps>(
   ({ showSchedules, schedules, hasSearched }, ref) => {
-    const getFacilityIcon = (facility: string) => {
-      const facilityMap: { [key: string]: string } = {
-        ac: "❄️",
-        wifi: "📶",
-        tv: "📺",
-        toilet: "🚽",
-        reclining_seat: "🛋️",
-        charging_port: "🔌",
-      };
-      return facilityMap[facility] || "✓";
-    };
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    // ❌ MASALAH 1: selectedSchedule tidak didefinisikan
+    const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(
+      null
+    );
+    // ❌ MASALAH 2: selectedSeats tidak didefinisikan
+    const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
-    const getFacilityLabel = (facility: string) => {
-      const facilityMap: { [key: string]: string } = {
-        ac: "AC",
-        wifi: "WiFi",
-        tv: "TV",
-        toilet: "Toilet",
-        reclining_seat: "Kursi Rebah",
-        charging_port: "Charging Port",
-      };
-      return facilityMap[facility] || facility;
+    const handleBookingClick = (schedule: Schedule) => {
+      setSelectedSchedule(schedule);
+      // TODO: Implementasi logika pemilihan kursi
+      // Untuk sementara set dummy seats
+      setSelectedSeats(["A1"]);
+      setIsModalOpen(true);
     };
 
     return (
@@ -161,8 +155,6 @@ const SearchResultSection = forwardRef<HTMLElement, ScheduleProps>(
                           </div>
                         </>
                       )}
-
-                      {/* Seat Status */}
                     </div>
                   </div>
 
@@ -172,14 +164,27 @@ const SearchResultSection = forwardRef<HTMLElement, ScheduleProps>(
                         Gratis pembatalan hingga 2 jam sebelum keberangkatan
                       </p>
                     </div>
-                    <button className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 font-semibold flex items-center space-x-2 transition-colors justify-center">
-                      <span>Pilih Kursi</span>
+                    <button
+                      onClick={() => handleBookingClick(schedule)}
+                      className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 font-semibold flex items-center space-x-2 transition-colors justify-center cursor-pointer"
+                    >
+                      <span>Pesan</span>
                       <ChevronRight className="h-4 w-4" />
                     </button>
                   </div>
                 </div>
               ))}
             </div>
+
+            {/* ✅ PERBAIKAN: Gunakan selectedSchedule dan selectedSeats */}
+            {isModalOpen && selectedSchedule && (
+              <BookingModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                schedule={selectedSchedule}
+                selectedSeats={selectedSeats}
+              />
+            )}
           </section>
         ) : hasSearched && !showSchedules ? (
           <section

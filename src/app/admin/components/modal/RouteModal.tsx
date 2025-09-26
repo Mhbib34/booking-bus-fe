@@ -1,7 +1,7 @@
 import Button from "@/components/fragment/Button";
 import Input from "@/components/fragment/Input";
 import axiosInstance from "@/lib/axiosInstance";
-import { showSuccess } from "@/lib/sonner";
+import { showError, showSuccess } from "@/lib/sonner";
 import { ArrowRight, Bus, BusFront, MonitorDot } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -80,6 +80,7 @@ const RouteModal = ({
       }
     } catch (error) {
       console.log(error);
+      showError("Rute gagal ditambahkan.");
     } finally {
       setLoading(false);
     }
