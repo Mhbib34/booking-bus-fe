@@ -1,7 +1,7 @@
 import Button from "@/components/fragment/Button";
 import Input from "@/components/fragment/Input";
 import axiosInstance from "@/lib/axiosInstance";
-import { showSuccess } from "@/lib/sonner";
+import { showError, showSuccess } from "@/lib/sonner";
 import { useRouteStore } from "@/store/routes-store";
 import { Format } from "@/utils/format";
 import {
@@ -138,6 +138,7 @@ const BusesModal = ({
       }
     } catch (error) {
       console.log(error);
+      showError("Bus gagal ditambahkan.");
     } finally {
       setLoading(false);
     }

@@ -9,7 +9,7 @@ const UserFooter = () => {
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <Bus className="h-8 w-8 text-blue-400" />
-              <span className="text-xl font-bold">BusGo</span>
+              <span className="text-xl font-bold">BusKu</span>
             </div>
             <p className="text-gray-400">
               Solusi terpercaya untuk perjalanan bus online di Indonesia
@@ -25,7 +25,7 @@ const UserFooter = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white">
+                <a href="#route" className="hover:text-white">
                   Rute Populer
                 </a>
               </li>
