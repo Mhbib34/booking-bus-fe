@@ -1,12 +1,14 @@
 "use client";
 
 import PageLoader from "@/components/fragment/PageLoader";
-import { showConfirm } from "@/lib/sonner";
 import { useAuthStore } from "@/store/auth-store";
-import { Bus } from "lucide-react";
+import { Bus, Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useShallow } from "zustand/shallow";
+import { motion } from "framer-motion";
+import MobileMenu from "../fragment/MobileMenu";
+import DekstopMenu from "../fragment/DekstopMenu";
 
 const Header = () => {
   const { user, logout, loading } = useAuthStore(
@@ -19,6 +21,8 @@ const Header = () => {
     })
   );
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -37,7 +41,36 @@ const Header = () => {
   const handleLogout = () => {
     logout();
     router.push("/login");
+    setMobileMenuOpen(false);
+    setUserMenuOpen(false);
   };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+    setUserMenuOpen(false); // Close user menu when mobile menu opens
+  };
+
+  const toggleUserMenu = () => {
+    setUserMenuOpen(!userMenuOpen);
+    setMobileMenuOpen(false); // Close mobile menu when user menu opens
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest(".user-menu") && !target.closest(".mobile-menu")) {
+        setUserMenuOpen(false);
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   if (loading) return <PageLoader />;
 
@@ -50,7 +83,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <a href="#" className="flex items-center space-x-2">
             <Bus className="h-8 w-8 text-blue-600" />
             <span
               className={`text-xl font-bold ${
@@ -59,9 +92,9 @@ const Header = () => {
             >
               BusKu
             </span>
-          </div>
+          </a>
 
-          {/* Navigation */}
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
             <a
               href="#"
@@ -95,46 +128,53 @@ const Header = () => {
             </a>
           </nav>
 
-          {/* Actions */}
-          {user ? (
-            <div
-              onClick={() =>
-                showConfirm(
-                  "Keluar",
-                  "Apakah anda yakin ingin keluar?",
-                  () => handleLogout(),
-                  "Keluar"
-                )
-              }
-              className="flex items-center space-x-4 border border-red-600  px-4 py-1 rounded-lg cursor-pointer hover:bg-red-700 group transition-all duration-300"
+          {/* Desktop Actions */}
+          <DekstopMenu
+            user={user!}
+            scrolled={scrolled}
+            userMenuOpen={userMenuOpen}
+            toggleUserMenu={toggleUserMenu}
+            handleLogout={handleLogout}
+            setUserMenuOpen={setUserMenuOpen}
+          />
+
+          {/* Mobile Hamburger Button */}
+          <motion.button
+            onClick={toggleMobileMenu}
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg focus:outline-none mobile-menu"
+            whileTap={{ scale: 0.95 }}
+          >
+            <motion.div
+              initial={false}
+              animate={{ rotate: mobileMenuOpen ? 180 : 0 }}
+              transition={{ duration: 0.2 }}
             >
-              <button
-                className={`font-medium cursor-pointer group-hover:text-white text-red-600 transition-all duration-300`}
-              >
-                Keluar
-              </button>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => router.push("/login")}
-                className={`font-medium cursor-pointer ${
-                  scrolled
-                    ? "text-gray-700 hover:text-blue-600"
-                    : "text-white hover:text-blue-200"
-                }`}
-              >
-                Masuk
-              </button>
-              <button
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium cursor-pointer"
-                onClick={() => router.push("/register")}
-              >
-                Daftar
-              </button>
-            </div>
-          )}
+              {mobileMenuOpen ? (
+                <X
+                  className={`h-6 w-6 ${
+                    scrolled ? "text-gray-900" : "text-white"
+                  }`}
+                />
+              ) : (
+                <Menu
+                  className={`h-6 w-6 ${
+                    scrolled ? "text-gray-900" : "text-white"
+                  }`}
+                />
+              )}
+            </motion.div>
+          </motion.button>
         </div>
+
+        {/* Mobile Menu */}
+        <MobileMenu
+          scrolled={scrolled}
+          mobileMenuOpen={mobileMenuOpen}
+          user={user!}
+          closeMobileMenu={closeMobileMenu}
+          handleLogout={handleLogout}
+          setMobileMenuOpen={setMobileMenuOpen}
+        />
       </div>
     </header>
   );
