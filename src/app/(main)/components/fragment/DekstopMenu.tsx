@@ -1,6 +1,12 @@
 import { showConfirm } from "@/lib/sonner";
 import { User } from "@/types/user.type";
-import { ChevronDown, LogOut, Settings, User2 } from "lucide-react";
+import {
+  ChevronDown,
+  LogOut,
+  Settings,
+  TicketMinusIcon,
+  User2,
+} from "lucide-react";
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -102,7 +108,20 @@ const DekstopMenu = ({
                 </div>
 
                 {/* Menu Items */}
+
                 <div className="py-1">
+                  <motion.button
+                    onClick={() => {
+                      router.push("/bookings");
+                      closeUserMenu();
+                    }}
+                    className="w-full flex items-center space-x-3 px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
+                    whileHover={{ x: 4 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <TicketMinusIcon className="h-4 w-4" />
+                    <span>My Bookings</span>
+                  </motion.button>
                   <motion.button
                     onClick={() => {
                       router.push("/profile");
