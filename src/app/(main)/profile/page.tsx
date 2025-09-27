@@ -21,16 +21,6 @@ import { showError, showSuccess } from "@/lib/sonner";
 import axiosInstance from "@/lib/axiosInstance";
 
 const UserProfileSettings: React.FC = () => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-
-  const [editForm, setEditForm] = useState({
-    full_name: "",
-    phone: "",
-  });
-
   const { user, loading, fetchUser } = useAuthStore(
     useShallow((state) => {
       return {
@@ -40,6 +30,15 @@ const UserProfileSettings: React.FC = () => {
       };
     })
   );
+  const [isEditing, setIsEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const [editForm, setEditForm] = useState({
+    full_name: user?.full_name,
+    phone: user?.phone,
+  });
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -147,7 +146,7 @@ const UserProfileSettings: React.FC = () => {
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             {/* Profile Header */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8">
-              <div className="flex items-center justify-between">
+              <div className="flex md:items-center items-start justify-between md:flex-row flex-col space-y-6 md:space-y-0">
                 <div className="flex items-center space-x-4">
                   <div className="w-16 h-16 bg-black bg-opacity-20 rounded-full flex items-center justify-center">
                     <User className="w-8 h-8 text-white" />
@@ -255,7 +254,7 @@ const UserProfileSettings: React.FC = () => {
                   <button
                     onClick={handleUpdateUser}
                     disabled={saving}
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-4 py-2 rounded-lg transition-colors font-medium flex items-center justify-center space-x-2"
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-4 py-2 rounded-lg transition-colors font-medium flex items-center justify-center space-x-2 cursor-pointer"
                   >
                     {saving ? (
                       <>
@@ -272,7 +271,7 @@ const UserProfileSettings: React.FC = () => {
                   <button
                     onClick={handleCancel}
                     disabled={saving}
-                    className="px-6 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 rounded-lg transition-colors font-medium flex items-center space-x-2"
+                    className="px-6 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 rounded-lg transition-colors font-medium flex items-center space-x-2 cursor-pointer"
                   >
                     <X className="w-4 h-4" />
                     <span>Cancel</span>
