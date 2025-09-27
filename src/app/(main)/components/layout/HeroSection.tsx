@@ -88,7 +88,10 @@ const HeroSection = ({
   };
 
   return (
-    <section className="relative h-screen flex items-center justify-center text-white">
+    <section
+      id="hero"
+      className="relative h-screen flex items-center justify-center text-white"
+    >
       {/* Background Image */}
       <div>
         <Image

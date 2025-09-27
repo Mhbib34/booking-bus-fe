@@ -1,31 +1,24 @@
-import { useRouteStore } from "@/store/routes-store";
 import { useScheduleStore } from "@/store/schedule-store";
+import { Route } from "@/types/route.type";
 import { Schedule } from "@/types/schedule.type";
 import { Format } from "@/utils/format";
 import { Bus, ChevronRight } from "lucide-react";
-import React, { useEffect } from "react";
+import React from "react";
 import { useShallow } from "zustand/shallow";
 
 type props = {
   setShowSchedule: React.Dispatch<React.SetStateAction<boolean>>;
   setSchedules: React.Dispatch<React.SetStateAction<Schedule[]>>;
   scheduleSectionRef: React.RefObject<HTMLDivElement | null>;
+  routes: Route[];
 };
 
 const RoutesSection = ({
   setShowSchedule,
   setSchedules,
   scheduleSectionRef,
+  routes,
 }: props) => {
-  const { routes, fetchRoutes } = useRouteStore(
-    useShallow((state) => {
-      return {
-        routes: state.routes,
-        fetchRoutes: state.fetchRoutes,
-      };
-    })
-  );
-
   const { fetchSchedules } = useScheduleStore(
     useShallow((state) => {
       return {
@@ -33,11 +26,6 @@ const RoutesSection = ({
       };
     })
   );
-
-  useEffect(() => {
-    fetchRoutes();
-    //eslint-disable-next-line
-  }, []);
 
   const handleSearch = async (origin: string, destination: string) => {
     try {
@@ -84,7 +72,7 @@ const RoutesSection = ({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fadeIn">
-        {routes.data.slice(0, 4).map((route, index) => (
+        {routes.slice(0, 4).map((route, index) => (
           <div
             key={index}
             className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer border"

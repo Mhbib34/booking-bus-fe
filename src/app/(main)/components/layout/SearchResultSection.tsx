@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/store/auth-store"; // Import auth store
 import { Schedule } from "@/types/schedule.type";
 import { Format } from "@/utils/format";
 import { getFacilityIcon, getFacilityLabel } from "@/utils/status";
@@ -9,8 +10,11 @@ import {
   Calendar,
   MapPin,
 } from "lucide-react";
+import { useRouter } from "next/navigation"; // Import useRouter
 import React, { forwardRef, useState } from "react";
+import { useShallow } from "zustand/shallow";
 import BookingModal from "../modal/BookingModal";
+import LoginWarning from "../modal/LoginWarning";
 
 type ScheduleProps = {
   showSchedules: boolean;
@@ -20,20 +24,79 @@ type ScheduleProps = {
 
 const SearchResultSection = forwardRef<HTMLElement, ScheduleProps>(
   ({ showSchedules, schedules, hasSearched }, ref) => {
+    const router = useRouter();
+
+    // State untuk modal booking
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // ❌ MASALAH 1: selectedSchedule tidak didefinisikan
     const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(
       null
     );
-    // ❌ MASALAH 2: selectedSeats tidak didefinisikan
     const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
-    const handleBookingClick = (schedule: Schedule) => {
+    // State untuk LoginWarning modal
+    const [showLoginWarning, setShowLoginWarning] = useState(false);
+    const [pendingBookingSchedule, setPendingBookingSchedule] =
+      useState<Schedule | null>(null);
+
+    // Auth store untuk cek status login
+    const { user } = useAuthStore(
+      useShallow((state) => {
+        return {
+          user: state.user,
+        };
+      })
+    );
+
+    // Fungsi untuk melakukan booking (dipindah ke fungsi terpisah)
+    const proceedWithBooking = (schedule: Schedule) => {
       setSelectedSchedule(schedule);
       // TODO: Implementasi logika pemilihan kursi
       // Untuk sementara set dummy seats
       setSelectedSeats(["A1"]);
       setIsModalOpen(true);
+    };
+
+    const handleBookingClick = (schedule: Schedule) => {
+      // Cek apakah user sudah login
+      if (!user) {
+        // Jika belum login, simpan schedule yang dipilih dan tampilkan modal
+        setPendingBookingSchedule(schedule);
+        setShowLoginWarning(true);
+        return;
+      }
+
+      // Jika sudah login, langsung lanjutkan ke booking
+      proceedWithBooking(schedule);
+    };
+
+    // Handler untuk redirect ke halaman login
+    const handleLoginRedirect = () => {
+      setShowLoginWarning(false);
+      router.push("/login");
+    };
+
+    // Handler untuk redirect ke halaman register
+    const handleRegisterRedirect = () => {
+      setShowLoginWarning(false);
+      router.push("/register");
+    };
+
+    // Handler untuk menutup modal tanpa action
+    const handleCloseLoginModal = () => {
+      setShowLoginWarning(false);
+      setPendingBookingSchedule(null);
+    };
+
+    // Generate feature name untuk modal
+    const getBookingFeatureName = () => {
+      if (pendingBookingSchedule) {
+        const origin = pendingBookingSchedule.route?.origin || "kota asal";
+        const destination =
+          pendingBookingSchedule.route?.destination || "kota tujuan";
+        const busClass = pendingBookingSchedule.bus_class || "bus";
+        return `pemesanan tiket ${busClass} ${origin} ke ${destination}`;
+      }
+      return "pemesanan tiket bus";
     };
 
     return (
@@ -176,7 +239,7 @@ const SearchResultSection = forwardRef<HTMLElement, ScheduleProps>(
               ))}
             </div>
 
-            {/* ✅ PERBAIKAN: Gunakan selectedSchedule dan selectedSeats */}
+            {/* Booking Modal - hanya tampil jika user sudah login */}
             {isModalOpen && selectedSchedule && (
               <BookingModal
                 isOpen={isModalOpen}
@@ -250,6 +313,15 @@ const SearchResultSection = forwardRef<HTMLElement, ScheduleProps>(
             </div>
           </section>
         ) : null}
+
+        {/* Login Warning Modal */}
+        <LoginWarning
+          isOpen={showLoginWarning}
+          onClose={handleCloseLoginModal}
+          onLogin={handleLoginRedirect}
+          onRegister={handleRegisterRedirect}
+          featureName={getBookingFeatureName()}
+        />
       </>
     );
   }
