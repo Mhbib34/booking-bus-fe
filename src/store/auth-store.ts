@@ -21,6 +21,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
       const res = await axiosInstance.get("/v1/users/profile", {
         withCredentials: true,
       });
+      console.log(res.data.data);
+
       set({ user: res.data.data, loading: false });
       //eslint-disable-next-line
     } catch (error) {
