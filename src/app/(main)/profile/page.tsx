@@ -9,7 +9,6 @@ import {
   Save,
   X,
   Check,
-  Shield,
   Clock,
 } from "lucide-react";
 import { useAuthStore } from "@/store/auth-store";
@@ -91,7 +90,7 @@ const UserProfileSettings: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-2xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4">
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <Link

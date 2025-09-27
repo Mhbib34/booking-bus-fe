@@ -1,7 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User } from "@/types/user.type";
-import { LogOut, Settings, User2 } from "lucide-react";
+import { LogOut, Settings, TicketMinusIcon, User2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { showConfirm } from "@/lib/sonner";
 
@@ -165,6 +165,21 @@ const MobileMenu = ({
                   </div>
 
                   {/* Mobile Menu Actions */}
+                  <motion.button
+                    onClick={() => {
+                      router.push("/bookings");
+                      closeMobileMenu();
+                    }}
+                    className={`w-full flex items-center space-x-3 text-left font-medium py-2 px-3 rounded-lg ${
+                      scrolled
+                        ? "text-gray-700 hover:bg-gray-50"
+                        : "text-white hover:bg-white/10"
+                    }`}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <TicketMinusIcon className="h-4 w-4" />
+                    <span>My Bookings</span>
+                  </motion.button>
                   <motion.button
                     onClick={() => {
                       router.push("/profile");

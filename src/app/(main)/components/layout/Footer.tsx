@@ -61,7 +61,7 @@ const UserFooter = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Kontak</h3>
             <ul className="space-y-2 text-gray-400">
-              <li>Email: info@busgo.com</li>
+              <li>Email: info@busku.com</li>
               <li>Telepon: (021) 123-4567</li>
               <li>WhatsApp: +62 812-3456-7890</li>
             </ul>
