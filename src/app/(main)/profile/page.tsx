@@ -18,6 +18,14 @@ import Link from "next/link";
 import PageLoader from "@/components/fragment/PageLoader";
 import { showError, showSuccess } from "@/lib/sonner";
 import axiosInstance from "@/lib/axiosInstance";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const UserProfileSettings: React.FC = () => {
   const { user, loading, fetchUser } = useAuthStore(
@@ -92,27 +100,19 @@ const UserProfileSettings: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
-            <Link
-              href="/"
-              className="group inline-flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors duration-200"
-            >
-              <div className="p-2 rounded-lg bg-white border border-gray-200 shadow-sm group-hover:border-blue-300 group-hover:shadow-md transition-all duration-200">
-                <svg
-                  className="w-4 h-4 transform group-hover:-translate-x-0.5 transition-transform duration-200"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </div>
-              <span className="font-medium">Back to Home</span>
-            </Link>
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink asChild>
+                    <Link href="/">Home</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Profile</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
           </div>
 
           {/* Header */}

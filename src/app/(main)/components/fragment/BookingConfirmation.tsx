@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Passenger } from "@/types/passengger.type";
 import { Schedule } from "@/types/schedule.type";
 import { Format } from "@/utils/format";
@@ -98,19 +99,22 @@ const BookingConfirmation = ({
 
         {/* Actions */}
         <div className="flex justify-between">
-          <button
+          <Button
             onClick={onBack}
+            variant={"outline"}
+            size={"lg"}
             className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors cursor-pointer"
           >
             Kembali
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={onConfirm}
+            size={"lg"}
             className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center cursor-pointer"
           >
             <CreditCard className="w-4 h-4 mr-2" />
             Konfirmasi Booking
-          </button>
+          </Button>
         </div>
       </div>
       {loading && (

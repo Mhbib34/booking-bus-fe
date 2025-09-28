@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useScheduleStore } from "@/store/schedule-store";
 import { Route } from "@/types/route.type";
 import { Schedule } from "@/types/schedule.type";
@@ -101,12 +102,13 @@ const RoutesSection = ({
               </div>
             </div>
 
-            <button
+            <Button
               onClick={() => handleSearch(route.origin!, route.destination!)}
+              variant="outline"
               className="w-full mt-4 bg-blue-50 text-blue-600 py-2 rounded-lg hover:bg-blue-100 font-medium transition-colors cursor-pointer"
             >
               Pilih Rute
-            </button>
+            </Button>
           </div>
         ))}
       </div>

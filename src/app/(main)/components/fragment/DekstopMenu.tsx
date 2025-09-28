@@ -10,6 +10,8 @@ import {
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type Props = {
   user: User;
@@ -36,11 +38,11 @@ const DekstopMenu = ({
   return (
     <>
       {user ? (
-        <div className="hidden md:flex items-center relative user-menu">
+        <div className="hidden md:flex items-center relative user-menu ">
           {/* User Info Button */}
           <motion.button
             onClick={toggleUserMenu}
-            className={`flex items-center space-x-3 px-4 py-2 rounded-lg transition-all duration-300 ${
+            className={`flex items-center space-x-3 px-4 py-2 rounded-lg transition-all duration-300 cursor-pointer ${
               scrolled
                 ? "hover:bg-gray-100 text-gray-700"
                 : "hover:bg-white/10 text-white"
@@ -159,22 +161,25 @@ const DekstopMenu = ({
         </div>
       ) : (
         <div className="hidden md:flex items-center space-x-4">
-          <button
-            onClick={() => router.push("/login")}
-            className={`font-medium cursor-pointer ${
-              scrolled
-                ? "text-gray-700 hover:text-blue-600"
-                : "text-white hover:text-blue-200"
-            }`}
+          <Button asChild variant="ghost">
+            <Link
+              href="/login"
+              className={`${
+                scrolled
+                  ? "text-gray-700 hover:text-blue-600"
+                  : "text-white hover:text-black"
+              }`}
+            >
+              Masuk
+            </Link>
+          </Button>
+          <Button
+            asChild
+            variant="destructive"
+            className={`bg-blue-600 hover:bg-blue-700 `}
           >
-            Masuk
-          </button>
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium cursor-pointer"
-            onClick={() => router.push("/register")}
-          >
-            Daftar
-          </button>
+            <Link href="/register">Daftar</Link>
+          </Button>
         </div>
       )}
     </>

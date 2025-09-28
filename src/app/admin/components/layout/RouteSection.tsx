@@ -11,6 +11,7 @@ import RouteModal from "../modal/RouteModal";
 import axiosInstance from "@/lib/axiosInstance";
 import { showConfirm } from "@/lib/sonner";
 import { useDebouncedValue } from "@/utils/useDebounce";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   getStatusBadge: (status: string) => React.JSX.Element;
@@ -71,13 +72,15 @@ const RouteSection = ({ getStatusBadge }: Props) => {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold text-white">Rute Management</h2>
-          <button
+          <Button
             onClick={() => openModal("add")}
-            className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+            size={"lg"}
+            variant={"default"}
+            className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors cursor-pointer"
           >
-            <Plus className="h-4 w-4" />
-            <span>Tambah Rute</span>
-          </button>
+            <Plus />
+            Tambah Rute
+          </Button>
         </div>
 
         <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">

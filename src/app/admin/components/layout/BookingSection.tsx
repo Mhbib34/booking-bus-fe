@@ -47,7 +47,7 @@ const BookingSection = ({ getStatusBadge }: Props) => {
                   <TableHeader>Passengers</TableHeader>
                   <TableHeader sortable>Total Amount</TableHeader>
                   <TableHeader>Status</TableHeader>
-                  <TableHeader>Actions</TableHeader>
+                  {/* <TableHeader>Actions</TableHeader> */}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-700">
@@ -70,21 +70,21 @@ const BookingSection = ({ getStatusBadge }: Props) => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         {getStatusBadge(booking.booking_status!)}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      {/* <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div className="flex space-x-2">
-                          {/* <ActionButton
+                          <ActionButton
                         icon={Eye}
                         onClick={() => openModal("view-booking", booking)}
-                      /> */}
-                          {/* {booking.booking_status === "pending" && (
+                      />
+                          {booking.booking_status === "pending" && (
                         <ActionButton
                           icon={CheckCircle}
                           onClick={() => openModal("confirm-booking", booking)}
                           variant="success"
                         />
-                      )} */}
+                      )}
                         </div>
-                      </td>
+                      </td> */}
                     </TableRow>
                   ))
                 ) : (

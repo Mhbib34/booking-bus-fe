@@ -22,6 +22,15 @@ import { Format } from "@/utils/format";
 import { handlePrintTicket } from "./E-ticket";
 import TIcketModal from "./E-ticketModal";
 import Link from "next/link";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 
 interface BookingDetail extends Booking {
   passengers?: {
@@ -120,27 +129,19 @@ const BookingsPage = () => {
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <Link
-            href="/"
-            className="group inline-flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors duration-200"
-          >
-            <div className="p-2 rounded-lg bg-white border border-gray-200 shadow-sm group-hover:border-blue-300 group-hover:shadow-md transition-all duration-200">
-              <svg
-                className="w-4 h-4 transform group-hover:-translate-x-0.5 transition-transform duration-200"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </div>
-            <span className="font-medium">Back to Home</span>
-          </Link>
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink asChild>
+                  <Link href="/">Home</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>My Bookings</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
         {/* Header */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
@@ -243,13 +244,14 @@ const BookingsPage = () => {
                   </div>
 
                   <div className="flex gap-2">
-                    <button
+                    <Button
+                      size={"lg"}
                       onClick={() => handleViewDetails(booking)}
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
                     >
                       <Eye className="w-4 h-4" />
                       View E-Ticket
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

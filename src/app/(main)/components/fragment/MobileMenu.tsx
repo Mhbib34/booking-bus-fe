@@ -4,6 +4,8 @@ import { User } from "@/types/user.type";
 import { LogOut, Settings, TicketMinusIcon, User2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { showConfirm } from "@/lib/sonner";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 type MobileMenuProps = {
   scrolled: boolean;
@@ -22,6 +24,7 @@ const MobileMenu = ({
   setMobileMenuOpen,
 }: MobileMenuProps) => {
   const router = useRouter();
+  const MotionLink = motion(Link);
 
   const handleMobileNavClick = (href: string) => {
     if (href.startsWith("#")) {
@@ -165,11 +168,11 @@ const MobileMenu = ({
                   </div>
 
                   {/* Mobile Menu Actions */}
-                  <motion.button
+                  <MotionLink
                     onClick={() => {
-                      router.push("/bookings");
                       closeMobileMenu();
                     }}
+                    href="/bookings"
                     className={`w-full flex items-center space-x-3 text-left font-medium py-2 px-3 rounded-lg ${
                       scrolled
                         ? "text-gray-700 hover:bg-gray-50"
@@ -179,12 +182,12 @@ const MobileMenu = ({
                   >
                     <TicketMinusIcon className="h-4 w-4" />
                     <span>My Bookings</span>
-                  </motion.button>
-                  <motion.button
+                  </MotionLink>
+                  <MotionLink
                     onClick={() => {
-                      router.push("/profile");
                       closeMobileMenu();
                     }}
+                    href="/profile"
                     className={`w-full flex items-center space-x-3 text-left font-medium py-2 px-3 rounded-lg ${
                       scrolled
                         ? "text-gray-700 hover:bg-gray-50"
@@ -194,7 +197,7 @@ const MobileMenu = ({
                   >
                     <Settings className="h-4 w-4" />
                     <span>Profile Settings</span>
-                  </motion.button>
+                  </MotionLink>
 
                   <motion.button
                     onClick={() =>
@@ -214,28 +217,25 @@ const MobileMenu = ({
                 </div>
               ) : (
                 <div className="space-y-3">
-                  <motion.button
+                  <Button
+                    asChild
                     onClick={() => {
-                      router.push("/login");
                       closeMobileMenu();
                     }}
+                    variant={"ghost"}
                     className="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 font-medium text-center"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                   >
-                    Masuk
-                  </motion.button>
-                  <motion.button
+                    <Link href="/login">Masuk</Link>
+                  </Button>
+                  <Button
+                    asChild
                     onClick={() => {
-                      router.push("/register");
                       closeMobileMenu();
                     }}
                     className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium text-center"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                   >
-                    Daftar
-                  </motion.button>
+                    <Link href="/register">Daftar</Link>
+                  </Button>
                 </div>
               )}
             </motion.div>
