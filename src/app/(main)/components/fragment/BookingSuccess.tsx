@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
 
 type Props = {
@@ -31,12 +32,14 @@ const BookingSuccess = ({ bookingCode, onClose }: Props) => {
         </p>
       </div>
 
-      <button
+      <Button
         onClick={onClose}
-        className="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 cursor-pointer transition-colors"
+        size={"lg"}
+        className="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 cursor-pointer 
+        transition-colors"
       >
         Selesai
-      </button>
+      </Button>
     </div>
   );
 };

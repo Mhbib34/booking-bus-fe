@@ -8,6 +8,7 @@ import { useShallow } from "zustand/shallow";
 import { useScheduleStore } from "@/store/schedule-store";
 import { Format } from "@/utils/format";
 import ScheduleModal from "../modal/ScheduleModal";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   getStatusBadge: (status: string) => React.JSX.Element;
@@ -50,13 +51,14 @@ const ScheduleSection = ({ getStatusBadge }: Props) => {
           <h2 className="text-xl font-semibold text-white">
             Jadwal Management
           </h2>
-          <button
+          <Button
             onClick={() => openModal("add")}
-            className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+            size={"lg"}
+            className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors cursor-pointer"
           >
-            <Plus className="h-4 w-4" />
-            <span>Tambah Jadwal</span>
-          </button>
+            <Plus />
+            Tambah Jadwal
+          </Button>
         </div>
 
         <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">

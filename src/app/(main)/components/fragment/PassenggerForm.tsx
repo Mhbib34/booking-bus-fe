@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Passenger } from "@/types/passengger.type";
 import { Phone, User } from "lucide-react";
 import React from "react";
@@ -82,19 +83,22 @@ const PassenggerForm = ({
       </div>
 
       <div className="flex justify-between">
-        <button
+        <Button
           onClick={onBack}
+          variant={"outline"}
+          size={"lg"}
           className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors cursor-pointer"
         >
           Kembali
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={onNext}
           disabled={!isFormValid}
+          size={"lg"}
           className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors cursor-pointer"
         >
           Lanjutkan
-        </button>
+        </Button>
       </div>
     </div>
   );

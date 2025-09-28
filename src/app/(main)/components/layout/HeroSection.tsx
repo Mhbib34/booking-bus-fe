@@ -1,9 +1,18 @@
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { showWarning } from "@/lib/sonner";
 import { useScheduleStore } from "@/store/schedule-store";
 import { Schedule } from "@/types/schedule.type";
-import { Calendar, MapPin, Search } from "lucide-react";
+import { format } from "date-fns";
+import { CalendarIcon, MapPin, Search } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
+import Typewriter from "typewriter-effect";
 import { useShallow } from "zustand/shallow";
 
 type props = {
@@ -29,7 +38,7 @@ const HeroSection = ({
   const [searchForm, setSearchForm] = useState({
     origin: "",
     destination: "",
-    departure_date: "",
+    departure_date: undefined as Date | undefined,
   });
 
   const [isSearching, setIsSearching] = useState(false);
@@ -57,7 +66,7 @@ const HeroSection = ({
         1,
         searchForm.origin,
         searchForm.destination,
-        searchForm.departure_date
+        format(searchForm.departure_date, "yyyy-MM-dd")
       );
 
       const state = useScheduleStore.getState();
@@ -108,14 +117,27 @@ const HeroSection = ({
         {/* Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fadeIn mt-20 md:mt-0">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Pesan Tiket Bus Online
+            <Typewriter
+              options={{
+                strings: [
+                  "Selamat Datang",
+                  "Pesan Tiket Bus Online",
+                  "Mudah & Cepat",
+                ],
+                autoStart: true,
+                loop: true,
+                delay: 50,
+                deleteSpeed: 30,
+                cursor: "",
+              }}
+            />
           </h1>
           <p className="text-xl text-blue-100 mb-12">
             Mudah, cepat, dan terpercaya untuk perjalanan Anda
           </p>
 
           {/* Search Form */}
-          <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-xl p-6">
+          <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-xl p-6">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {/* Dari */}
               <div className="relative">
@@ -171,31 +193,45 @@ const HeroSection = ({
               {/* Tanggal */}
               <div className="relative">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tanggal Keberangkatan
+                  Tanggal
                 </label>
-                <div className="relative">
-                  <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                  <input
-                    type="date"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                    value={searchForm.departure_date}
-                    onChange={(e) =>
-                      setSearchForm({
-                        ...searchForm,
-                        departure_date: e.target.value,
-                      })
-                    }
-                    min={new Date().toISOString().split("T")[0]}
-                  />
-                </div>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button
+                      className={`w-full flex items-center pl-10 pr-4 py-3 border border-gray-300 rounded-lg text-left text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                        !searchForm.departure_date ? "text-gray-400" : ""
+                      }`}
+                    >
+                      <CalendarIcon className="absolute left-3 h-5 w-5 text-gray-400" />
+                      {searchForm.departure_date
+                        ? format(searchForm.departure_date, "PPP")
+                        : "Pilih tanggal"}
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      captionLayout="dropdown-months"
+                      selected={searchForm.departure_date}
+                      onSelect={(date) =>
+                        setSearchForm({
+                          ...searchForm,
+                          departure_date: date ?? undefined,
+                        })
+                      }
+                    />
+                  </PopoverContent>
+                </Popover>
               </div>
 
               {/* Button */}
               <div className="flex items-end">
-                <button
+                <Button
                   onClick={handleSearch}
                   disabled={isSearching}
-                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-semibold flex items-center justify-center space-x-2 cursor-pointer"
+                  variant={"destructive"}
+                  size={"icon"}
+                  className="w-full bg-blue-600 text-white py-6 px-6 rounded-lg hover:bg-blue-700 disabled:opacity-50 font-semibold flex items-center justify-center space-x-2 cursor-pointer"
                 >
                   {isSearching ? (
                     <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
@@ -205,7 +241,7 @@ const HeroSection = ({
                       <span>Cari</span>
                     </>
                   )}
-                </button>
+                </Button>
               </div>
             </div>
           </div>

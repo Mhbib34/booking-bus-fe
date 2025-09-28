@@ -143,13 +143,13 @@ const AdminDashboard = () => {
           title="Total Bookings"
           value={stats.totalBookings}
           icon={Users}
-          color="purple"
+          color="red"
         />
         <StatsCard
           title="Active Schedules"
           value={stats.activeSchedules}
           icon={Calendar}
-          color="orange"
+          color="yellow"
         />
       </div>
 

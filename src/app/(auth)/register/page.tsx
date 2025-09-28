@@ -1,6 +1,5 @@
 "use client";
 
-import Button from "@/components/fragment/Button";
 import Input from "@/components/fragment/Input";
 import { ArrowRight, Bus, Lock, Mail, Phone, User2 } from "lucide-react";
 import Message from "../components/Message";
@@ -11,6 +10,8 @@ import axiosInstance from "@/lib/axiosInstance";
 import { useRouter } from "next/navigation";
 import PageLoader from "@/components/fragment/PageLoader";
 import { showSuccess } from "@/lib/sonner";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const RegisterPage = () => {
   const [registerForm, setRegisterForm] = useState({
@@ -219,21 +220,25 @@ const RegisterPage = () => {
                 </label>
               </div>
 
-              <Button type="submit" loading={loading}>
+              <Button
+                type="submit"
+                disabled={loading}
+                size={"lg"}
+                className="w-full cursor-pointer bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
+              >
                 <span>Create Account</span>
                 <ArrowRight className="h-4 w-4" />
               </Button>
 
               <div className="text-center">
                 <span className="text-gray-400">Already have an account? </span>
-                <button
+                <Link
                   type="button"
+                  href="/login"
                   className="text-blue-400 hover:text-blue-300 font-medium transition-colors cursor-pointer"
-                  disabled={loading}
-                  onClick={() => router.push("/login")}
                 >
                   Sign in
-                </button>
+                </Link>
               </div>
             </form>
           </div>

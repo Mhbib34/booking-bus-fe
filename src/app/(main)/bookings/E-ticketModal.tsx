@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Booking } from "@/types/booking.type";
 import { Format } from "@/utils/format";
 import { Download, X } from "lucide-react";
@@ -32,8 +33,8 @@ const TIcketModal = ({
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">E-Ticket</h2>
-                <div className="flex gap-2">
-                  <button
+                <div className="flex gap-2 items-center">
+                  <Button
                     onClick={() =>
                       handlePrintTicket(ticketRef, selectedBooking)
                     }
@@ -41,7 +42,7 @@ const TIcketModal = ({
                   >
                     <Download className="w-4 h-4" />
                     Print PDF
-                  </button>
+                  </Button>
                   <button
                     onClick={() => setShowTicket(false)}
                     className="p-2 text-gray-400 hover:text-gray-600 cursor-pointer"

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Schedule } from "@/types/schedule.type";
 import { Format } from "@/utils/format";
 import { Clock, CreditCard, MapPin, Users } from "lucide-react";
@@ -137,13 +138,14 @@ const PassenggerCountForm = ({
       </div>
 
       <div className="flex justify-end">
-        <button
+        <Button
           onClick={onNext}
+          size={"lg"}
           className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center cursor-pointer"
         >
           <Users className="w-4 h-4 mr-2" />
           Lanjut ke Data Penumpang
-        </button>
+        </Button>
       </div>
     </div>
   );

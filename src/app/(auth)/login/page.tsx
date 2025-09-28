@@ -2,13 +2,14 @@
 import { ArrowRight, Bus, Lock, Mail } from "lucide-react";
 import Message from "../components/Message";
 import Input from "@/components/fragment/Input";
-import Button from "@/components/fragment/Button";
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axiosInstance";
 import { showSuccess } from "@/lib/sonner";
 import PageLoader from "@/components/fragment/PageLoader";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface LoginErrors {
   identifier?: string;
@@ -150,21 +151,25 @@ const LoginPage = () => {
                 </button>
               </div>
 
-              <Button type="submit" loading={loading}>
+              <Button
+                type="submit"
+                disabled={loading}
+                size={"lg"}
+                className="w-full bg-blue-600 cursor-pointer hover:bg-blue-700 focus:ring-blue-500"
+              >
                 <span>Sign In</span>
                 <ArrowRight className="h-4 w-4" />
               </Button>
 
               <div className="text-center">
                 <span className="text-gray-400">Dont have an account? </span>
-                <button
-                  onClick={() => router.push("/register")}
+                <Link
+                  href="/register"
                   type="button"
                   className="text-blue-400 hover:text-blue-300 font-medium transition-colors cursor-pointer"
-                  disabled={loading}
                 >
                   Sign up
-                </button>
+                </Link>
               </div>
             </form>
           </div>
