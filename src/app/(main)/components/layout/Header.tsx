@@ -12,14 +12,13 @@ import DekstopMenu from "../fragment/DekstopMenu";
 
 const Header = () => {
   const { user, logout, loading } = useAuthStore(
-    useShallow((state) => {
-      return {
-        user: state.user,
-        logout: state.logout,
-        loading: state.loading,
-      };
-    })
+    useShallow((state) => ({
+      user: state.user,
+      logout: state.logout,
+      loading: state.loading,
+    }))
   );
+
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -27,13 +26,8 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -47,17 +41,15 @@ const Header = () => {
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
-    setUserMenuOpen(false); // Close user menu when mobile menu opens
+    setUserMenuOpen(false);
   };
 
   const toggleUserMenu = () => {
     setUserMenuOpen(!userMenuOpen);
-    setMobileMenuOpen(false); // Close mobile menu when user menu opens
-  };
-
-  const closeMobileMenu = () => {
     setMobileMenuOpen(false);
   };
+
+  const closeMobileMenu = () => setMobileMenuOpen(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -75,8 +67,10 @@ const Header = () => {
   if (loading) return <PageLoader />;
 
   return (
-    <header
-      data-aos="fade-down"
+    <motion.header
+      initial={{ y: -80, opacity: 0 }} // posisi awal di atas
+      animate={{ y: 0, opacity: 1 }} // masuk ke tempat semestinya
+      transition={{ duration: 0.1, ease: "easeOut" }}
       className={`fixed top-0 left-0 right-0 z-[999] transition-all duration-300 ${
         scrolled ? "bg-white shadow-md" : "bg-transparent"
       }`}
@@ -84,7 +78,11 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <a href="#" className="flex items-center space-x-2">
+          <motion.a
+            href="#"
+            className="flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+          >
             <Bus className="h-8 w-8 text-blue-600" />
             <span
               className={`text-xl font-bold ${
@@ -93,40 +91,26 @@ const Header = () => {
             >
               BusKu
             </span>
-          </a>
+          </motion.a>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <a
-              href="#"
-              className={`font-medium ${
-                scrolled
-                  ? "text-gray-700 hover:text-blue-600"
-                  : "text-white hover:text-blue-200"
-              }`}
-            >
-              Beranda
-            </a>
-            <a
-              href="#route"
-              className={`font-medium ${
-                scrolled
-                  ? "text-gray-700 hover:text-blue-600"
-                  : "text-white hover:text-blue-200"
-              }`}
-            >
-              Rute
-            </a>
-            <a
-              href="#services"
-              className={`font-medium ${
-                scrolled
-                  ? "text-gray-700 hover:text-blue-600"
-                  : "text-white hover:text-blue-200"
-              }`}
-            >
-              Bantuan
-            </a>
+            {["Beranda", "Rute", "Bantuan"].map((label, idx) => (
+              <motion.a
+                key={idx}
+                href={`#${label.toLowerCase()}`}
+                className={`font-medium ${
+                  scrolled
+                    ? "text-gray-700 hover:text-blue-600"
+                    : "text-white hover:text-blue-200"
+                }`}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + idx * 0.1 }}
+              >
+                {label}
+              </motion.a>
+            ))}
           </nav>
 
           {/* Desktop Actions */}
@@ -177,7 +161,7 @@ const Header = () => {
           setMobileMenuOpen={setMobileMenuOpen}
         />
       </div>
-    </header>
+    </motion.header>
   );
 };
 

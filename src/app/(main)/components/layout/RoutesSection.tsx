@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { useScheduleStore } from "@/store/schedule-store";
 import { Route } from "@/types/route.type";
@@ -6,6 +8,7 @@ import { Format } from "@/utils/format";
 import { Bus, ChevronRight } from "lucide-react";
 import React from "react";
 import { useShallow } from "zustand/shallow";
+import { motion } from "framer-motion";
 
 type props = {
   setShowSchedule: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,11 +24,9 @@ const RoutesSection = ({
   routes,
 }: props) => {
   const { fetchSchedules } = useScheduleStore(
-    useShallow((state) => {
-      return {
-        fetchSchedules: state.fetchSchedules,
-      };
-    })
+    useShallow((state) => ({
+      fetchSchedules: state.fetchSchedules,
+    }))
   );
 
   const handleSearch = async (origin: string, destination: string) => {
@@ -40,47 +41,55 @@ const RoutesSection = ({
       if (state.schedules.length > 0) {
         setSchedules(state.schedules);
         setShowSchedule(true);
-        setTimeout(() => {
-          scheduleSectionRef.current?.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        }, 200);
-      } else if (state.schedules.length === 0) {
+      } else {
         setSchedules([]);
         setShowSchedule(false);
-        setTimeout(() => {
-          scheduleSectionRef.current?.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        }, 200);
       }
+
+      setTimeout(() => {
+        scheduleSectionRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 200);
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
-    <section
-      data-aos="fade-up"
-      id="route"
-      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 animate-slideUp"
+    <motion.section
+      id="rute"
+      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      viewport={{ once: true, amount: 0.2 }} // animasi jalan sekali saat 20% section terlihat
     >
-      <div className="text-center mb-12">
+      {/* Title */}
+      <motion.div
+        className="text-center mb-12"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+      >
         <h2 className="text-3xl font-bold text-gray-900 mb-4">Rute Populer</h2>
         <p className="text-lg text-gray-600">
           Pilihan rute favorit dengan harga terbaik
         </p>
-      </div>
+      </motion.div>
 
-      <div
-        data-aos="fade-right"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fadeIn"
-      >
+      {/* Grid Routes */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {routes.slice(0, 4).map((route, index) => (
-          <div
+          <motion.div
             key={index}
             className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer border"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: index * 0.2 }}
+            viewport={{ once: true }}
           >
             <div className="flex justify-between items-start mb-4">
               <div>
@@ -113,10 +122,10 @@ const RoutesSection = ({
             >
               Pilih Rute
             </Button>
-          </div>
+          </motion.div>
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 };
 

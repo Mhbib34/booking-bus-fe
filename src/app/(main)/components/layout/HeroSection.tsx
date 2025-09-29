@@ -14,6 +14,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Typewriter from "typewriter-effect";
 import { useShallow } from "zustand/shallow";
+import { motion } from "framer-motion";
 
 type props = {
   setSchedules: React.Dispatch<React.SetStateAction<Schedule[]>>;
@@ -42,11 +43,6 @@ const HeroSection = ({
   });
 
   const [isSearching, setIsSearching] = useState(false);
-
-  //eslint-disable-next-line
-  const handleChange = (field: keyof typeof searchForm, value: any) => {
-    setSearchForm((prev) => ({ ...prev, [field]: value }));
-  };
 
   const handleSearch = async () => {
     if (
@@ -97,8 +93,8 @@ const HeroSection = ({
   };
 
   return (
-    <section
-      id="hero"
+    <motion.section
+      id="beranda"
       className="relative h-screen flex items-center justify-center text-white"
     >
       {/* Background Image */}
@@ -115,10 +111,7 @@ const HeroSection = ({
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/70 to-blue-800/70" />
 
         {/* Content */}
-        <div
-          data-aos="fade-up"
-          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fadeIn mt-20 md:mt-0"
-        >
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fadeIn mt-20 md:mt-0">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             <Typewriter
               options={{
@@ -140,8 +133,10 @@ const HeroSection = ({
           </p>
 
           {/* Search Form */}
-          <div
-            data-aos="fade-up"
+          <motion.div
+            initial={{ y: 80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
             className="max-w-5xl mx-auto bg-white rounded-xl shadow-xl p-6"
           >
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -250,10 +245,10 @@ const HeroSection = ({
                 </Button>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 
