@@ -115,7 +115,10 @@ const HeroSection = ({
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/70 to-blue-800/70" />
 
         {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fadeIn mt-20 md:mt-0">
+        <div
+          data-aos="fade-up"
+          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center animate-fadeIn mt-20 md:mt-0"
+        >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             <Typewriter
               options={{
@@ -137,7 +140,10 @@ const HeroSection = ({
           </p>
 
           {/* Search Form */}
-          <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-xl p-6">
+          <div
+            data-aos="fade-up"
+            className="max-w-5xl mx-auto bg-white rounded-xl shadow-xl p-6"
+          >
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               {/* Dari */}
               <div className="relative">
