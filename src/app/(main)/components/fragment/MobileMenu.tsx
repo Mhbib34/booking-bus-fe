@@ -23,7 +23,6 @@ const MobileMenu = ({
   handleLogout,
   setMobileMenuOpen,
 }: MobileMenuProps) => {
-  const router = useRouter();
   const MotionLink = motion(Link);
 
   const handleMobileNavClick = (href: string) => {
@@ -73,10 +72,10 @@ const MobileMenu = ({
             {/* Mobile Navigation */}
             <div className="space-y-3">
               <motion.a
-                href="#"
+                href="#beranda"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleMobileNavClick("#hero");
+                  handleMobileNavClick("#beranda");
                 }}
                 className={`block font-medium cursor-pointer ${
                   scrolled
@@ -92,10 +91,10 @@ const MobileMenu = ({
                 Beranda
               </motion.a>
               <motion.a
-                href="#route"
+                href="#rute"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleMobileNavClick("#route");
+                  handleMobileNavClick("#rute");
                 }}
                 className={`block font-medium cursor-pointer ${
                   scrolled
@@ -111,10 +110,10 @@ const MobileMenu = ({
                 Rute
               </motion.a>
               <motion.a
-                href="#services"
+                href="#bantuan"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleMobileNavClick("#services");
+                  handleMobileNavClick("#bantuan");
                 }}
                 className={`block font-medium cursor-pointer ${
                   scrolled
