@@ -2,7 +2,6 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User } from "@/types/user.type";
 import { LogOut, Settings, TicketMinusIcon, User2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { showConfirm } from "@/lib/sonner";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
