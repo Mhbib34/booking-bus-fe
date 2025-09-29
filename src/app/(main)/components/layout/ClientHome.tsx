@@ -13,6 +13,7 @@ import ServiceSection from "./ServiceSection";
 import FeaturesSection from "./FeaturesSection";
 import UserFooter from "./Footer";
 import { Schedule } from "@/types/schedule.type";
+import AOS from "aos";
 
 export default function ClientHome({ routes }: { routes: Route[] }) {
   const { fetchUser } = useAuthStore(
@@ -27,6 +28,13 @@ export default function ClientHome({ routes }: { routes: Route[] }) {
   useEffect(() => {
     fetchUser();
     //eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
   }, []);
 
   return (

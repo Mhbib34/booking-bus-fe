@@ -2,7 +2,7 @@ import React from "react";
 
 const ServiceSection = () => {
   return (
-    <section id="services" className="bg-gray-50 py-20">
+    <section data-aos="fade-up" id="services" className="bg-gray-50 py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -15,7 +15,7 @@ const ServiceSection = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Booking Process */}
-          <div className="bg-white rounded-lg p-8">
+          <div data-aos="fade-right" className="bg-white rounded-lg p-8">
             <h3 className="text-xl font-bold text-gray-900 mb-6">
               Cara Pemesanan
             </h3>
@@ -71,7 +71,7 @@ const ServiceSection = () => {
           </div>
 
           {/* Terms & Conditions */}
-          <div className="bg-white rounded-lg p-8">
+          <div data-aos="fade-left" className="bg-white rounded-lg p-8">
             <h3 className="text-xl font-bold text-gray-900 mb-6">
               Syarat & Ketentuan
             </h3>
