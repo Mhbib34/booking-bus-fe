@@ -30,13 +30,12 @@ const RoutesSection = ({
   );
 
   const handleSearch = async (origin: string, destination: string) => {
+    const now = new Date();
+    const dateIndonesia = now.toLocaleDateString("en-CA");
+
     try {
-      await fetchSchedules(
-        1,
-        origin,
-        destination,
-        new Date().toISOString().split("T")[0]
-      );
+      await fetchSchedules(1, origin, destination, dateIndonesia);
+
       const state = useScheduleStore.getState();
       if (state.schedules.length > 0) {
         setSchedules(state.schedules);
