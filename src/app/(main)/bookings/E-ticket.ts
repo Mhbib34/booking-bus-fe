@@ -26,6 +26,44 @@ export const handlePrintTicket = (
                   color: #333;
                 }
                 
+                .breadcrumb {
+                  max-width: 800px;
+                  margin: 0 auto 20px;
+                  padding: 12px 20px;
+                  background: white;
+                  border-radius: 8px;
+                  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                
+                .breadcrumb-list {
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  list-style: none;
+                  font-size: 14px;
+                  color: #6c757d;
+                }
+                
+                .breadcrumb-link {
+                  color: #667eea;
+                  text-decoration: none;
+                  transition: color 0.2s;
+                }
+                
+                .breadcrumb-link:hover {
+                  color: #764ba2;
+                  text-decoration: underline;
+                }
+                
+                .breadcrumb-separator {
+                  color: #dee2e6;
+                }
+                
+                .breadcrumb-current {
+                  color: #333;
+                  font-weight: 500;
+                }
+                
                 .ticket-container {
                   max-width: 800px;
                   margin: 0 auto;
@@ -303,6 +341,26 @@ export const handlePrintTicket = (
                   font-size: 16px;
                 }
                 
+                .back-button {
+                  display: inline-block;
+                  margin-top: 15px;
+                  padding: 12px 30px;
+                  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  color: white;
+                  text-decoration: none;
+                  border-radius: 25px;
+                  font-weight: bold;
+                  font-size: 14px;
+                  cursor: pointer;
+                  border: none;
+                  transition: transform 0.2s;
+                }
+                
+                .back-button:hover {
+                  transform: translateY(-2px);
+                  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+                }
+                
                 .qr-placeholder {
                   width: 80px;
                   height: 80px;
@@ -358,6 +416,10 @@ export const handlePrintTicket = (
                     background: white !important;
                   }
                   
+                  .breadcrumb {
+                    display: none;
+                  }
+                  
                   .ticket-container {
                     box-shadow: none;
                     max-width: none;
@@ -379,10 +441,30 @@ export const handlePrintTicket = (
                   .total-amount {
                     color: #333 !important;
                   }
+                  
+                  .back-button {
+                    display: none;
+                  }
                 }
               </style>
             </head>
             <body>
+              <!-- Breadcrumb -->
+              <nav class="breadcrumb">
+                <ol class="breadcrumb-list">
+                  <li>
+                    <a href="/" class="breadcrumb-link">Home</a>
+                  </li>
+                  <li class="breadcrumb-separator">/</li>
+                  <li>
+                    <a href="javascript:window.close()" class="breadcrumb-link">My Bookings</a>
+                  </li>
+                  <li class="breadcrumb-separator">/</li>
+                  <li class="breadcrumb-current">E-Ticket</li>
+                </ol>
+              </nav>
+              
+              <!-- Ticket -->
               <div class="ticket-container">
                 <div class="ticket-inner">
                   <!-- Header -->
